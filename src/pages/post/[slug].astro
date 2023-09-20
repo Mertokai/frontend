@@ -1,0 +1,149 @@
+---
+import { useSanityClient } from "@sanity/astro";
+import PortableText from "../../components/PortableText.astro";
+import Header from "../../components/Header.astro";
+import { ViewTransitions } from "astro:transitions";
+import Footer from "../../components/Footer.astro";
+
+export async function getStaticPaths() {
+  const posts = await useSanityClient()
+    .fetch(`*[_type == "post" &&  "Posts" in categories[]->title]{
+  publishedAt,
+  categories[] -> {
+    title,
+  },
+  author -> {slug,bio,name , image{
+     asset -> {
+       _id,
+       url
+     }
+  }},
+  slug,
+  title,
+  mainImage {
+    asset->{
+      _id,
+      url
+    },
+    alt
+  },
+  body
+  }`);
+
+  return posts.map((post) => {
+    return {
+      params: {
+        slug: post.slug?.current || "",
+      },
+      props: {
+        title: post.title,
+        body: post.body,
+        mainImage: post.mainImage, // Include the mainImage in props
+        author: post.author?.name,
+        image: post.author.image.asset.url,
+        publishedAt: post.publishedAt,
+        authorBody: post.author.bio,
+        authorSlug: post.author.slug.current,
+      },
+    };
+  });
+}
+
+const {
+  title,
+  body,
+  mainImage,
+  author,
+  image,
+  publishedAt,
+  authorBody,
+  authorSlug,
+} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>My blog</title>
+    <ViewTransitions />
+  </head>
+  <body class="max-w-6xl mx-auto">
+    <Header />
+    <div></div>
+    <div>
+      <div
+        class="container px-8 mx-auto xl:px-5 max-w-screen-lg py-5 lg:py-8 !pt-0"
+      >
+        <div class="mx-auto max-w-screen-md">
+          <div class="flex justify-center">
+            <div class="flex gap-3">
+              <a href="/category/travel"
+                ><span
+                  class="inline-block text-xs font-medium tracking-wider uppercase mt-5 text-orange-700"
+                ></span></a
+              >
+            </div>
+          </div><h1
+            class="text-brand-primary mb-3 mt-2 text-center text-3xl font-semibold tracking-tight dark:text-white lg:text-4xl lg:leading-snug"
+          >
+            {title}
+          </h1><div class="mt-3 flex justify-center space-x-3 text-gray-500">
+            <div class="flex items-center gap-3 cursor-pointer">
+              <div class="relative h-10 w-10 flex-shrink-0">
+                <img
+                  src={image}
+                  alt={author}
+                  loading="lazy"
+                  decoding="async"
+                  data-nimg="fill"
+                  class="rounded-full object-cover"
+                  style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
+                  sizes="40px"
+                />
+              </div><div>
+                <p class="text-gray-800 dark:text-gray-400 cursor-pointer">
+                  {author}
+                </p><div class="flex items-center space-x-2 text-sm">
+                  <time class="text-gray-500 dark:text-gray-400"></time>
+                  {publishedAt.slice(0, 10)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><div
+      class="relative z-0 mx-auto aspect-video max-w-screen-lg overflow-hidden lg:rounded-lg"
+    >
+      <img
+        alt="Thumbnail"
+        loading="eager"
+        decoding="async"
+        data-nimg="fill"
+        class="object-cover"
+        style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
+        sizes="100vw"
+        src={mainImage.asset.url}
+      />
+    </div><div
+      class="container px-8 mx-auto xl:px-5 max-w-screen-lg py-5 lg:py-8"
+    >
+      <article class="mx-auto max-w-screen-md">
+        <div
+          class="prose mx-auto my-3 dark:prose-invert prose-a:text-blue-600 mt-5"
+        >
+          <PortableText portableText={body} />
+        </div>
+      </article><div class="mb-7 mt-7 flex justify-center">
+        <a
+          class="bg-brand-secondary/20 rounded-full px-5 py-2 mt-10 text-sm text-blue-600 dark:text-blue-500"
+          href="/post">← Bütün postları gör</a
+        >
+      </div>
+    </div>
+    <Footer />
+  </body>
+</html>

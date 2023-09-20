@@ -1,0 +1,55 @@
+---
+import { useSanityClient } from "@sanity/astro";
+import ViewTransitions from "astro/components/ViewTransitions.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+
+const posts = await useSanityClient()
+  .fetch(`*[_type == "author"] {slug,bio,name , image{
+     asset -> {
+       _id,
+       url
+     }
+  }}
+`);
+---
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="generator" content={Astro.generator} />
+  <title>My blog</title>
+  <ViewTransitions />
+</head>
+<main>
+  <Header />
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 max-w-6xl mx-auto gap-16"
+  >
+    {
+      posts.map((item) => (
+        <div class="w-full md:max-w-sm rounded overflow-hidden shadow-lg">
+          <img
+            class="w-full h-64"
+            src={item.image.asset.url}
+            alt="Sunset in the mountains"
+          />
+          <div class="px-6 py-4">
+            <div class="font-bold text-xl mb-2">{item.name}</div>
+            <p class="text-gray-700 text-base">
+              {item.bio.map((block) => (
+                <div>
+                  {block.children.map((child) => (
+                    <div>{child.text.slice(0, 125)}</div>
+                  ))}{" "}
+                </div>
+              ))}
+            </p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  <Footer />
+</main>

@@ -1,0 +1,29 @@
+---
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+import TryPost from "../../components/TryPost.astro";
+import { ViewTransitions } from "astro:transitions";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>My blog</title>
+    <ViewTransitions />
+  </head>
+  <body class="max-w-6xl mx-auto selection:bg-cyan-300">
+    <Header />
+    <div class="text-center">
+      <h1 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">Blogumuz</h1>
+      <p class="text-lg mt-4 text-slate-600">
+        Lorem Ipsum is simply dummy text of the printing and typesetting
+        industry.
+      </p>
+    </div>
+    <TryPost />
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,68 @@
+---
+import { useSanityClient } from "@sanity/astro";
+
+const posts = await useSanityClient()
+  .fetch(`*[_type == "post" &&  "Etkinlikler" in categories[]->title]| order(_createdAt desc){
+  publishedAt,
+  categories[] -> {
+    title,
+  },
+  author -> {slug,bio,name , image{
+     asset -> {
+       _id,
+       url
+     }
+  }},
+  slug,
+  title,
+  mainImage {
+    asset->{
+      _id,
+      url
+    },
+    alt
+  },
+  body
+  }
+`);
+---
+
+<main class="mt-16 antialiased">
+  {
+    posts && (
+      <div>
+        {posts.map((post) => (
+          <ul class="grid gap-16 max-w-4xl mx-auto px-5 py-5">
+            <li>
+              <a href={`events/${post.slug.current}`}>
+                <div class="grid md:grid-cols-2 gap-5 md:gap-10 items-center">
+                  <picture>
+                    <img
+                      alt="data structures & algorithms"
+                      src={post.mainImage.asset.url}
+                      loading="eager"
+                      decoding="sync"
+                      class="w-full rounded-md object-cover max-h-[250px] hover:scale-105 transition-all"
+                    />
+                  </picture>
+                  <div>
+                    <h2 class="text-3xl font-semibold leading-snug tracking-tight mt-1">
+                      {post.title}
+                    </h2>
+                    <div class="flex gap-2 mt-3">
+                      <span class="text-gray-400">{post.author?.name}</span>
+                      <span class="text-gray-400">•</span>
+                      <time class="text-gray-400">
+                        {post.publishedAt?.slice(0, 10)}
+                      </time>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        ))}
+      </div>
+    )
+  }
+</main>

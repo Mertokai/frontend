@@ -1,0 +1,93 @@
+---
+import { useSanityClient } from "@sanity/astro";
+const posts = await useSanityClient()
+  .fetch(`*[_type == "post" &&  "Etkinlikler" in categories[]->title ] | order(_createdAt desc)
+[0...3]{
+  publishedAt,
+  categories[] -> {
+    title,
+  },
+  author -> {slug,bio,name , image{
+     asset -> {
+       _id,
+       url
+     }
+  }},
+  slug{
+    current
+  },
+  title,
+  mainImage {
+    asset->{
+      _id,
+      url
+    },
+    alt
+  },
+  body
+  }
+`);
+---
+
+<section id="events" class="bg-gray-100 py-16">
+  <div class="container mx-auto">
+    <h2 class="text-3xl font-semibold mb-8 text-center">Son etkinliklerimiz</h2>
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+      {
+        posts.map((item) => (
+          <div class="md:max-w-sm bg-white border md:max-h-[500px] border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <a href={`events/${item.slug.current}`}>
+              <img
+                loading="lazy"
+                class="rounded-t-lg h-1/2 w-full"
+                src={item.mainImage.asset.url}
+                alt=""
+              />
+            </a>
+            <div class="p-5">
+              <a href={`events/${item.slug.current}`}>
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {item.title}
+                </h5>
+              </a>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                {
+                  item.body.map((block) => (
+                    <div>
+                      {
+                        block.children.map((child) => (
+                          <div>{child.text.slice(0, 125)}</div>
+                        ))[0]
+                      }{" "}
+                    </div>
+                  ))[0]
+                }
+              </p>
+              <a
+                href={`events/${item.slug.current}`}
+                class="inline-flex sm:my-16 md:my-4 items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Okumaya devam et
+                <svg
+                  class="w-3.5 h-3.5 ml-2"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 10"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M1 5h12m0 0L9 1m4 4L9 9"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
