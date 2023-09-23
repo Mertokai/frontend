@@ -1,0 +1,27 @@
+---
+import { Image } from "astro:assets";
+import image from "../../public/logo.png";
+---
+
+<header
+  class="items-center justify-center flex flex-col md:flex-row md:items-center md:justify-between md:px-5 h-1/2"
+>
+  <a href="/">
+    <Image class="w-32 h-32" src={image} width={300} height={300} alt="logo" />
+  </a>
+  <nav class="items-center justify-center">
+    <ul class="flex space-x-5 items-center pb-5">
+      <a class="hover:text-blue-300 text-gray-400" href="/post"><li>Blog</li></a
+      >
+      <a class="hover:text-blue-300 text-gray-400" href="/about"
+        ><li>Hakkımızda</li></a
+      >
+      <a class="hover:text-blue-300 text-gray-400" href="/events">
+        <li>Etkinliklerimiz</li></a
+      >
+      <a class="hover:text-blue-300 text-gray-400" href="/contact">
+        <li>İletişim</li></a
+      >
+    </ul>
+  </nav>
+</header>

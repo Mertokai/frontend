@@ -3,7 +3,7 @@ import { useSanityClient } from "@sanity/astro";
 import PortableText from "../../components/PortableText.astro";
 import { ViewTransitions } from "astro:transitions";
 import Footer from "../../components/Footer.astro";
-import Header from "../../components/Header.jsx";
+import Header from "../../components/Header.astro";
 export async function getStaticPaths() {
   const posts = await useSanityClient()
     .fetch(`*[_type == "post" &&  "Posts" in categories[]->title]{

@@ -1,5 +1,5 @@
 ---
-import Header from "../components/Header.jsx";
+import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { ViewTransitions } from "astro:transitions";
 const { title, Name, desc } = Astro.props;
@@ -14,8 +14,8 @@ const { title, Name, desc } = Astro.props;
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <body class="max-w-6xl mx-auto selection:bg-cyan-300 font-sans antialiased">
-    <Header client:load />
+  <body class="selection:bg-cyan-300 font-sans antialiased">
+    <Header />
     <div class="text-center">
       <h1 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">{Name}</h1>
       <p class="text-lg mt-4 text-slate-600">
