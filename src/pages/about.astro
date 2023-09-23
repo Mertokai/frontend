@@ -1,8 +1,6 @@
 ---
 import { useSanityClient } from "@sanity/astro";
-import ViewTransitions from "astro/components/ViewTransitions.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
+import SpaLayouts from "../layouts/SpaLayouts.astro";
 
 const posts = await useSanityClient()
   .fetch(`*[_type == "author"] {slug,bio,name , image{
@@ -14,16 +12,7 @@ const posts = await useSanityClient()
 `);
 ---
 
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width" />
-  <meta name="generator" content={Astro.generator} />
-  <title>My blog</title>
-  <ViewTransitions />
-</head>
-<main>
-  <Header />
+<SpaLayouts>
   <div
     class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 max-w-6xl mx-auto gap-16"
   >
@@ -51,5 +40,4 @@ const posts = await useSanityClient()
       ))
     }
   </div>
-  <Footer />
-</main>
+</SpaLayouts>

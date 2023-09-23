@@ -1,10 +1,9 @@
 ---
 import { useSanityClient } from "@sanity/astro";
 import PortableText from "../../components/PortableText.astro";
-import Header from "../../components/Header.astro";
+import Header from "../../components/Header.jsx";
 import { ViewTransitions } from "astro:transitions";
 import Footer from "../../components/Footer.astro";
-
 export async function getStaticPaths() {
   const posts = await useSanityClient()
     .fetch(`*[_type == "post" &&  "Etkinlikler" in categories[]->title]{
@@ -70,8 +69,8 @@ const {
     <title>My blog</title>
     <ViewTransitions />
   </head>
-  <body class="max-w-6xl mx-auto selection:bg-cyan-300">
-    <Header />
+  <body class="max-w-6xl mx-auto selection:bg-cyan-300 font-sans antialiased">
+    <Header client:load />
     <div>
       <div
         class="container px-8 mx-auto xl:px-5 max-w-screen-lg py-5 lg:py-8 !pt-0"
