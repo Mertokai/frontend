@@ -38,6 +38,7 @@ const posts = await useSanityClient()
                 <div class="grid md:grid-cols-2 gap-5 md:gap-10 items-center">
                   <picture>
                     <img
+                      transition:name={`${post.title}`}
                       alt="data structures & algorithms"
                       src={post.mainImage.asset.url}
                       loading="eager"

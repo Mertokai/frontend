@@ -38,6 +38,7 @@ const posts = await useSanityClient()
           <div class="md:max-w-sm bg-white border md:max-h-[500px] border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <a href={`events/${item.slug.current}`}>
               <img
+                transition:name={item.title}
                 loading="lazy"
                 class="rounded-t-lg h-1/2 w-full"
                 src={item.mainImage.asset.url}

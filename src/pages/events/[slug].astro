@@ -70,7 +70,7 @@ const {
     <ViewTransitions />
   </head>
   <body class="max-w-6xl mx-auto selection:bg-cyan-300 font-sans antialiased">
-    <Header client:load />
+    <Header />
     <div>
       <div
         class="container px-8 mx-auto xl:px-5 max-w-screen-lg py-5 lg:py-8 !pt-0"
@@ -121,6 +121,7 @@ const {
       class="relative z-0 mx-auto aspect-video max-w-screen-lg overflow-hidden lg:rounded-lg"
     >
       <img
+        transition:name={title}
         alt="Thumbnail"
         loading="eager"
         decoding="async"
