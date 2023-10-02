@@ -3,7 +3,7 @@ import { useSanityClient } from "@sanity/astro";
 import SpaLayouts from "../layouts/SpaLayouts.astro";
 
 const posts = await useSanityClient()
-  .fetch(`*[_type == "author"] {slug,bio,name , image{
+  .fetch(`*[_type == "post" &&  "boardMembers" in categories[]->title]{body, title,body, mainImage{
      asset -> {
        _id,
        url
@@ -26,13 +26,13 @@ const posts = await useSanityClient()
         <div class="w-full md:max-w-sm rounded overflow-hidden shadow-lg">
           <img
             class="w-full h-64"
-            src={item.image.asset.url}
+            src={item.mainImage.asset.url}
             alt="Sunset in the mountains"
           />
           <div class="px-6 py-4">
-            <div class="font-bold text-xl mb-2">{item.name}</div>
+            <div class="font-bold text-xl mb-2">{item.title}</div>
             <p class="text-gray-700 text-base">
-              {item.bio.map((block) => (
+              {item.body.map((block) => (
                 <div>
                   {block.children.map((child) => (
                     <div>{child.text.slice(0, 125)}</div>
