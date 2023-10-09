@@ -40,7 +40,7 @@ const posts = await useSanityClient()
               <img
                 transition:name={item.title}
                 loading="lazy"
-                class="rounded-t-lg h-1/2 w-full"
+                class="rounded-t-lg h-1/2 w-full object-center object-cover"
                 src={item.mainImage.asset.url}
                 alt=""
               />
