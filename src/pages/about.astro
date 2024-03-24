@@ -1,48 +1,28 @@
 ---
-import { useSanityClient } from "@sanity/astro";
 import SpaLayouts from "../layouts/SpaLayouts.astro";
-
-const posts = await useSanityClient()
-  .fetch(`*[_type == "post" &&  "boardMembers" in categories[]->title]{body, title,body, mainImage{
-     asset -> {
-       _id,
-       url
-     }
-  }}
-`);
 ---
 
 <SpaLayouts title="Hakkımızda">
   <div class="text-center pb-5">
-    <h1 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
-      Hakkımızda
-    </h1><p class="text-lg mt-4 text-slate-600">Yönetim Kurulumuz</p>
-  </div>
-  <div
-    class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 max-w-6xl mx-auto gap-16"
-  >
-    {
-      posts.map((item) => (
-        <div class="w-full md:max-w-sm rounded overflow-hidden shadow-lg">
-          <img
-            class="w-full h-64 object-center object-cover"
-            src={item.mainImage.asset.url}
-            alt="Sunset in the mountains"
-          />
-          <div class="px-6 py-4">
-            <div class="font-bold text-xl mb-2">{item.title}</div>
-            <p class="text-gray-700 text-base">
-              {item.body.map((block) => (
-                <div>
-                  {block.children.map((child) => (
-                    <div>{child.text.slice(0, 125)}</div>
-                  ))}{" "}
-                </div>
-              ))}
-            </p>
-          </div>
-        </div>
-      ))
-    }
+    <h1 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">Hakkımızda</h1>
+    <div class="max-w-4xl mx-auto mt-8">
+      <div class="mb-8">
+        <h2 class="text-lg font-semibold mb-2">Vizyonumuz:</h2>
+        <p class="text-gray-700 leading-relaxed mx-8">
+          Üye mutluluğunu ve gelişimini esas alarak uluslararası standartlarda
+          inovatif, bilimsel ve eleştirebilen gençleri birleştirici en kolektif
+          topluluk olmak
+        </p>
+      </div>
+      <div>
+        <h2 class="text-lg font-semibold mb-2">Misyonumuz:</h2>
+        <p class="text-gray-700 leading-relaxed mx-8">
+          Üyelerimize sunduğumuz kariyer gelişim noktaları ve geniş network
+          ağıyla hem kulüp departmanları olarak kendimizi hem de üyelerimizi iş
+          hayatına hazırlarken aynı zamanda sosyal becerilerini
+          geliştirebilecekleri alanlar sunup nitelik kazandırmak
+        </p>
+      </div>
+    </div>
   </div>
 </SpaLayouts>
